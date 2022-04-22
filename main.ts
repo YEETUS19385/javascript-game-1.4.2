@@ -7,18 +7,192 @@ namespace SpriteKind {
     export const Purple_Slime1 = SpriteKind.create()
     export const Purple_Projectile1 = SpriteKind.create()
     export const Gate1 = SpriteKind.create()
+    export const Blue_Slime_1 = SpriteKind.create()
+    export const Blue_SLimeling_1 = SpriteKind.create()
+    export const Gate2 = SpriteKind.create()
 }
-sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Orange_Slime3, function (sprite, otherSprite) {
-    Orange_Slime_3.destroy(effects.fire, 100)
+sprites.onDestroyed(SpriteKind.Purple_Slime1, function (sprite) {
+    Purple_Slime_1_Life = false
+})
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    Level2()
+})
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Blue_SLimeling_1, function (sprite, otherSprite) {
+    Blue_Slimeling_1.destroy(effects.disintegrate, 100)
 })
 function Level2 () {
-	
+    tiles.setCurrentTilemap(tilemap`level2`)
+    tiles.placeOnTile(mySprite, tiles.getTileLocation(7, 29))
+    sprites.destroyAllSpritesOfKind(SpriteKind.Orange_Slime)
+    sprites.destroyAllSpritesOfKind(SpriteKind.Orange_Slime1)
+    sprites.destroyAllSpritesOfKind(SpriteKind.Orange_Slime2)
+    sprites.destroyAllSpritesOfKind(SpriteKind.Orange_Slime3)
+    sprites.destroyAllSpritesOfKind(SpriteKind.Purple_Slime1)
+    Blue_Slime_1 = sprites.create(img`
+        ........................................
+        ........................................
+        ...................66...................
+        ...................6....................
+        ...................6....................
+        .......66..........6..........6.........
+        ........66........66........666.........
+        .........66.......66.......66...........
+        ..........66.......6......66............
+        ...6666....66......6.....66.............
+        ......6.....66.....6...666.......66.....
+        ......6......66....6..66.........6......
+        ......6....fff6ffff6ff6.........6.......
+        ......6...ff9998899988ff.......66.......
+        ......66ff88999989998899f.....66........
+        .......6f9989999888988899ff..66.....66..
+        ......f6899889998988898899fff6.....66...
+        ......f98999889989989998888f66....66....
+        ..66..f9889998888998999889999ff..66.....
+        ...6.f999899998889989998999988ff.6......
+        ...66ff998999998999888889999899f66......
+        ....66f998899998998889988899899f6.......
+        .....f99988998888888898898888888f.......
+        .....f99888888889989889999898996f.......
+        .....f998888999988899888888989966.......
+        .....f8889899989898999889988889f66......
+        .....f8999888888898899999989988f.66666..
+        .....fff9989999899988999888999f......6..
+        ......ff9989999899998999899999f.........
+        .......fffffffffffffffffffffff..........
+        `, SpriteKind.Blue_Slime_1)
+    tiles.placeOnTile(Blue_Slime_1, tiles.getTileLocation(8, 14))
+    Gate2 = sprites.create(img`
+        a a a c c a a a a a c a a a a a 
+        3 3 3 3 c 3 3 3 3 3 c 3 3 3 3 3 
+        3 3 3 3 c 3 3 3 3 3 c 3 3 3 3 3 
+        a a a a c a a a a a c c a a a a 
+        c c c c c c c c c c c c c c c c 
+        c a a a f f f f f f f f f f f f 
+        c c c a f f f f f f f f f f f f 
+        c c c a f f f f f f f f f f f f 
+        c c c a f f f f f f f f f f f f 
+        c c c a f f f f f f f f f f f f 
+        c a a c f f f f f f f f f f f f 
+        c c c a f f f f f f f f f f f f 
+        c c c a f f f f f c c f f f f f 
+        c c c a f c c c f f f f f c c c 
+        c c c a c c c f f c c c f c c c 
+        a c c a c c c c c c c c f c c f 
+        `, SpriteKind.Gate2)
+    Gate22 = sprites.create(img`
+        a a a a a c a a a a a c c a a a 
+        3 3 3 3 3 c 3 3 3 3 3 c 3 3 3 3 
+        3 3 3 3 3 c 3 3 3 3 3 c 3 3 3 3 
+        a a a a c c a a a a a c a a a a 
+        c c c c c c c c c c c c c c c c 
+        f f f f f f f f f f f f a a a c 
+        f f f f f f f f f f f f a c c c 
+        f f f f f f f f f f f f a c c c 
+        f f f f f f f f f f f f a c c c 
+        f f f f f f f f f f f f a c c c 
+        f f f f f f f f f f f f c a a c 
+        f f f f f f f f f f f f a c c c 
+        f f f f f c c f f f f f a c c c 
+        c c c f f f f f c c c f a c c c 
+        c c c f c c c f f c c c a c c c 
+        f c c f c c c c c c c c a c c a 
+        `, SpriteKind.Gate2)
+    tiles.placeOnTile(Gate2, tiles.getTileLocation(7, 0))
+    tiles.placeOnTile(Gate22, tiles.getTileLocation(8, 0))
 }
+sprites.onCreated(SpriteKind.Blue_Slime_1, function (sprite) {
+    BLue_Slime_1_Life = true
+})
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (FacingUp == 1) {
+        projectile = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . f f . . . . . . . . 
+            . . . . . f 6 7 f . . . . . . . 
+            . . . . f 7 7 6 f . . . . . . . 
+            . . . . f 6 7 7 f . . . . . . . 
+            . . . . f 7 7 7 f . . . . . . . 
+            . . . . f 7 7 f . . . . . . . . 
+            . . . . . f 7 6 . . . . . . . . 
+            . . . . . . 7 7 . . . . . . . . 
+            . . . . . . 6 . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . 7 . . . . . . . . . . 
+            . . . . . . . 6 . . . . . . . . 
+            . . . . . . 7 . . . . . . . . . 
+            `, mySprite, 0, -80)
+    }
+    if (FacingDown == 1) {
+        projectile = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . 7 . . . . . . 
+            . . . . . . . . 6 . . . . . . . 
+            . . . . . . . . . . 7 . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . 6 . . . . . . 
+            . . . . . . . . 7 7 . . . . . . 
+            . . . . . . . . 6 7 f . . . . . 
+            . . . . . . . . f 7 7 f . . . . 
+            . . . . . . . f 7 7 7 f . . . . 
+            . . . . . . . f 7 7 6 f . . . . 
+            . . . . . . . f 6 7 7 f . . . . 
+            . . . . . . . f 7 6 f . . . . . 
+            . . . . . . . . f f . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, mySprite, 0, 80)
+    }
+    if (FacingLeft == 1) {
+        projectile = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . f f f f . . . . . . . 
+            . . . . f 7 6 7 7 f . . . 7 . . 
+            . . . f 6 7 7 7 7 7 7 6 . . . 7 
+            . . . f 7 6 7 7 f 6 7 . . . 6 . 
+            . . . . f f f f . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, mySprite, -80, 0)
+    }
+    if (FacingRight == 1) {
+        projectile = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . f f f f . . . . . 
+            . . 7 . . . f 7 7 6 7 f . . . . 
+            7 . . . 6 7 7 7 7 7 7 6 f . . . 
+            . 6 . . . 7 6 f 7 7 6 7 f . . . 
+            . . . . . . . . f f f f . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, mySprite, 80, 0)
+    }
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Gate1, function (sprite, otherSprite) {
     Level2()
 })
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Orange_Slime1, function (sprite, otherSprite) {
-    Orange_Slime_1.destroy()
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Orange_Slime1, function (sprite, otherSprite) {
+    Orange_Slime_1.destroy(effects.fire, 100)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Orange_Slime3, function (sprite, otherSprite) {
+    Orange_Slime_3.destroy()
     info.changeLifeBy(-1)
 })
 function Level1 () {
@@ -314,99 +488,58 @@ function Level1 () {
     tiles.placeOnTile(Gate1, tiles.getTileLocation(7, 0))
     tiles.placeOnTile(Gate11, tiles.getTileLocation(8, 0))
 }
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Purple_Slime1, function (sprite, otherSprite) {
+    Purple_Slime_1.destroy(effects.fire, 100)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Orange_Slime1, function (sprite, otherSprite) {
+    Orange_Slime_1.destroy()
+    info.changeLifeBy(-1)
+})
+sprites.onCreated(SpriteKind.Purple_Slime1, function (sprite) {
+    Purple_Slime_1_Life = true
+})
+sprites.onDestroyed(SpriteKind.Blue_Slime_1, function (sprite) {
+    BLue_Slime_1_Life = false
+})
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Orange_Slime2, function (sprite, otherSprite) {
     Orange_Slime_2.destroy(effects.fire, 100)
 })
-sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Orange_Slime1, function (sprite, otherSprite) {
-    Orange_Slime_1.destroy(effects.fire, 100)
+sprites.onOverlap(SpriteKind.Blue_SLimeling_1, SpriteKind.Player, function (sprite, otherSprite) {
+    sprites.destroyAllSpritesOfKind(SpriteKind.Blue_SLimeling_1)
+    info.changeLifeBy(-1)
+})
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Orange_Slime3, function (sprite, otherSprite) {
+    Orange_Slime_3.destroy(effects.fire, 100)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Orange_Slime2, function (sprite, otherSprite) {
     Orange_Slime_2.destroy()
     info.changeLifeBy(-1)
 })
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Orange_Slime3, function (sprite, otherSprite) {
-    Orange_Slime_3.destroy()
-    info.changeLifeBy(-1)
-})
-controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    Orange_Slime_1 = sprites.create(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . f f f f f . . 
-        . . . . . . f f f 4 4 4 4 4 f . 
-        . . . . . f 4 4 4 4 4 4 4 4 4 f 
-        . . . f f 4 4 4 4 4 4 4 4 4 4 f 
-        . . f 4 4 4 4 4 4 4 4 4 4 4 4 f 
-        . f 4 4 4 4 f 4 4 f 4 4 4 4 4 f 
-        . f 4 4 4 4 f 4 4 f 4 4 4 4 f . 
-        f 4 4 4 4 4 4 4 4 4 4 4 4 4 f . 
-        f 4 4 4 4 4 4 4 4 4 4 4 4 4 f . 
-        . f 4 4 4 4 4 4 4 4 4 4 4 f . . 
-        `, SpriteKind.Orange_Slime1)
-    Orange_Slime_2 = sprites.create(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . f f f f f . . . . . . . . . 
-        . f 4 4 4 4 4 f f f . . . . . . 
-        f 4 4 4 4 4 4 4 4 4 f . . . . . 
-        f 4 4 4 4 4 4 4 4 4 4 f f . . . 
-        f 4 4 4 4 4 4 4 4 4 4 4 4 f . . 
-        f 4 4 4 4 4 f 4 4 f 4 4 4 4 f . 
-        . f 4 4 4 4 f 4 4 f 4 4 4 4 f . 
-        . f 4 4 4 4 4 4 4 4 4 4 4 4 4 f 
-        . f 4 4 4 4 4 4 4 4 4 4 4 4 4 f 
-        . . f 4 4 4 4 4 4 4 4 4 4 4 f . 
-        `, SpriteKind.Orange_Slime2)
-    Orange_Slime_3 = sprites.create(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . f f f f f . . 
-        . . . . . . f f f 4 4 4 4 4 f . 
-        . . . . . f 4 4 4 4 4 4 4 4 4 f 
-        . . . f f 4 4 4 4 4 4 4 4 4 4 f 
-        . . f 4 4 4 4 4 4 4 4 4 4 4 4 f 
-        . f 4 4 4 4 f 4 4 f 4 4 4 4 4 f 
-        . f 4 4 4 4 f 4 4 f 4 4 4 4 f . 
-        f 4 4 4 4 4 4 4 4 4 4 4 4 4 f . 
-        f 4 4 4 4 4 4 4 4 4 4 4 4 4 f . 
-        . f 4 4 4 4 4 4 4 4 4 4 4 f . . 
-        `, SpriteKind.Orange_Slime3)
-    Orange_Slime_1.setBounceOnWall(true)
-    Orange_Slime_2.setBounceOnWall(true)
-    Orange_Slime_3.setBounceOnWall(true)
-    Orange_Slime_1.setVelocity(50, 50)
-    Orange_Slime_2.setVelocity(50, 50)
-    Orange_Slime_3.setVelocity(50, 50)
-    tiles.placeOnTile(Orange_Slime_1, tiles.getTileLocation(2, 7))
-    tiles.placeOnTile(Orange_Slime_2, tiles.getTileLocation(12, 6))
-    tiles.placeOnTile(Orange_Slime_3, tiles.getTileLocation(6, 2))
-})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Purple_Projectile1, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
-    Purple_projectile_1.destroy()
+    sprites.destroyAllSpritesOfKind(SpriteKind.Purple_Projectile1)
 })
 let Slime_Trail: Sprite = null
 let slimy = 0
 let Purple_projectile_1: Sprite = null
-let mySprite: Sprite = null
 let Gate11: Sprite = null
 let Gate1: Sprite = null
 let Purple_Slime_1: Sprite = null
 let Orange_Slime_2: Sprite = null
-let Orange_Slime_1: Sprite = null
 let Orange_Slime_3: Sprite = null
+let Orange_Slime_1: Sprite = null
+let FacingRight = 0
+let FacingLeft = 0
+let FacingDown = 0
+let projectile: Sprite = null
+let FacingUp = 0
+let BLue_Slime_1_Life = false
+let Gate22: Sprite = null
+let Gate2: Sprite = null
+let Blue_Slime_1: Sprite = null
+let mySprite: Sprite = null
+let Blue_Slimeling_1: Sprite = null
+let Purple_Slime_1_Life = false
 scene.setBackgroundImage(img`
     bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
     bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
@@ -902,6 +1035,80 @@ game.showLongText("There is an ancient cave at the base of the mountain", Dialog
 game.showLongText("You enter the cave, having recieved reports of criminal inside", DialogLayout.Bottom)
 game.showLongText("DUN DUN DUM", DialogLayout.Bottom)
 Level1()
+game.onUpdate(function () {
+    if (characterAnimations.matchesRule(mySprite, characterAnimations.rule(Predicate.MovingUp))) {
+        FacingUp = 1
+        FacingDown = 0
+        FacingLeft = 0
+        FacingRight = 0
+    }
+    if (characterAnimations.matchesRule(mySprite, characterAnimations.rule(Predicate.MovingDown))) {
+        FacingUp = 0
+        FacingDown = 1
+        FacingLeft = 0
+        FacingRight = 0
+    }
+    if (characterAnimations.matchesRule(mySprite, characterAnimations.rule(Predicate.MovingLeft))) {
+        FacingUp = 0
+        FacingDown = 0
+        FacingLeft = 1
+        FacingRight = 0
+    }
+    if (characterAnimations.matchesRule(mySprite, characterAnimations.rule(Predicate.MovingRight))) {
+        FacingUp = 0
+        FacingDown = 0
+        FacingLeft = 0
+        FacingRight = 1
+    }
+})
+game.onUpdateInterval(2000, function () {
+    if (BLue_Slime_1_Life == true) {
+        Blue_Slimeling_1 = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . 6 6 . . . . 6 6 . . . . . . 
+            . . . 6 6 . . . 6 . . . . . . . 
+            . . . f 6 f f f 6 f f 6 6 6 . . 
+            6 . f f 9 9 8 9 9 9 6 6 6 . . . 
+            6 6 f 9 8 8 8 8 8 8 f f . . . . 
+            . f f 8 8 9 9 9 9 f f . . . . . 
+            . . f f f f f f f f . . . . . . 
+            `, Blue_Slime_1, 0, 0)
+        Blue_Slimeling_1.follow(mySprite, 30)
+        Blue_Slimeling_1.setKind(SpriteKind.Blue_SLimeling_1)
+    }
+})
+game.onUpdateInterval(1000, function () {
+    if (Purple_Slime_1_Life == true) {
+        Purple_projectile_1 = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . c . . . . . 
+            . . . . . . . . b b c . . . . . 
+            . . . . b c . b c a c . . . . . 
+            . . . . . b c b a a c b . . . . 
+            . . . . . b a a a a b b . . . . 
+            . . . . . . b a a a a c . . . . 
+            . . . . . . b a c c c c . . . . 
+            . . . . . . c c . . b c . . . . 
+            . . . . . . c . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, Purple_Slime_1, 0, 0)
+        Purple_projectile_1.follow(mySprite, 40)
+        Purple_projectile_1.setKind(SpriteKind.Purple_Projectile1)
+    }
+})
 game.onUpdateInterval(100, function () {
     if (characterAnimations.matchesRule(mySprite, characterAnimations.rule(Predicate.Moving))) {
         slimy = randint(1, 4)
@@ -942,26 +1149,4 @@ game.onUpdateInterval(100, function () {
                 `, mySprite, 0, 0)
         }
     }
-})
-game.onUpdateInterval(1000, function () {
-    Purple_projectile_1 = sprites.createProjectileFromSprite(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . c . . . . . 
-        . . . . . . . . b b c . . . . . 
-        . . . . b c . b c a c . . . . . 
-        . . . . . b c b a a c b . . . . 
-        . . . . . b a a a a b b . . . . 
-        . . . . . . b a a a a c . . . . 
-        . . . . . . b a c c c c . . . . 
-        . . . . . . c c . . b c . . . . 
-        . . . . . . c . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        `, Purple_Slime_1, 0, 0)
-    Purple_projectile_1.follow(mySprite, 50)
-    Purple_projectile_1.setKind(SpriteKind.Purple_Projectile1)
 })
